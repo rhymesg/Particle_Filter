@@ -1,5 +1,5 @@
 # Particle_Filter
-MATLAB implementation of standard particle filter, auxiliary particle filter, mixture particle filter, out-of-sequence particle filter, and receding-horizon Kalman filter
+MATLAB implementation of standard particle filter, auxiliary particle filter, mixture particle filter, and out-of-sequence particle filter with an application to terrain-referenced navigation
 
 How to run:
 
