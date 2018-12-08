@@ -1,7 +1,5 @@
 
-load('../DEM/DB_part.mat')
-DEM.DB = DB/3;
-DEM.resolution = 30;
+load('DB_part.mat')
 
 y_max = floor( max(x_true(2,:))/DEM.resolution ) + 20;
 y_min = floor( min(x_true(2,:))/DEM.resolution ) - 20;
