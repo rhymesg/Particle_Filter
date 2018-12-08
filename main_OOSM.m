@@ -14,12 +14,11 @@ RUN_OOSM = 1;   % proposed method with out-of-sequence measurement update
 RUN_PF = 1;     % standard particle filter
 RUN_MPF = 1;    % mixture particle filter
 RUN_APF = 1;    % auxiliary particle filter
-RUN_RHKF = 1;   % receding-horizon Kalman filter
 
 simTime = 150;
 dt = 1;
 numParticle = 500;
-numMonte = 10; % number of Monte-Carlo runs
+numMonte = 1; % number of Monte-Carlo runs
 length = simTime/dt + 1; % t = 0 at k = 1
 time = 0:dt:simTime;
 
@@ -36,7 +35,6 @@ sig_bias_v = 0;     % actual process noise bias
 sig_init = 40;      % std for initial P
 sig_proc = 8;       % std for Q
 sig_meas = 25;      % std for R
-windowSize = 10; % window size for receding horizon Kalamn filter
 
 %% true trajectory & sensor data
 
@@ -437,126 +435,6 @@ dcov_res_APF = dcov_res;
 
 end
 
-%% RHKF [Rengaswamy 2013]
-
-if (RUN_RHKF == 1)
-
-x_est = zeros(2,length,numMonte);
-x_err = zeros(2,length,numMonte);
-dcov_res = zeros(2,length,numMonte);
-P11 = diag([sig_init^2, sig_init^2]); % initial covariance
-A = eye(2,2); % state transition matrix
-Q = diag([sig_proc^2, sig_proc^2]); % process noise covariance
-disp(['-- RHKF started --']);
-for i = 1:1:numMonte
-    
-    x_est(:,1,i) = x_init + x_init_err(1)*randn(2,1);
-    x_err(:,1,i) = x_est(:,1,i) - x_true(:,1);
-    
-    for k = 2:1:length
-        
-        if (k < windowSize + 1)
-            M = k - 1;
-            Pkk = P11;
-            kp = 1; % time index of previous estimate
-            Xk = x_est(:,kp);
-        else
-            M = windowSize;
-            Pkk = Pa_prev(1:2,1:2); % for the first block
-            kp = k - M; % time index of previous estimate
-            Xk = x_est(:,kp);
-        end
-
-        % augmented state and covariance
-        % [k-M+1, ..., k]
-        Pa = zeros(2*M, 2*M); % augmented covariance matrix
-        Xa = zeros(2*M,1); % augmented state vector
-        
-        % others
-        Ha = zeros(M,2*M); % augmented sensitivity matrix
-        Ra = sig_meas^2*eye(M,M); % augmented measurement covariance
-        Ka = zeros(2*M,M); % augmented Kalman gain
-        z_est_a = zeros(M,1); % augmented estimated measurement
-        z_mea_a = zeros(M,1); % augmented measurement
-        
-        % % % Propagation
-        % diagonal blocks
-        
-        %%% open loop estimates
-        P = Pkk;
-        X = Xk;
-        for m = 1:1:M
-            P = A*P*A' + Q;
-            Pa = SetBlockMat(Pa, P, m, m, 2, 2);
-            
-            X = X + v_meas(:,kp+m-1,i)*dt;
-            Xa(2*m-1:2*m,1) = X;
-        end
-        x_est(:,k,i) = Xa(2*M-1:2*M,1);
-
-        % off-diagonal
-        for r = 1:1:M
-            for c = 1:1:M
-                if (r ~= c && r < c)
-                    P = GetBlockMat(Pa, r, c-1, 2, 2);
-                    P = P*A';
-                    Pa = SetBlockMat(Pa, P, r, c, 2, 2);
-                end
-                if (r ~= c && r > c)
-                    P = GetBlockMat(Pa, r-1, c, 2, 2);
-                    P = A*P;
-                    Pa = SetBlockMat(Pa, P, r, c, 2, 2);
-                end
-            end
-        end
-        
-        % % % Correction
-        % sensitivity matrix
-        s = 0.01; % perturbation
-        for m = 1:1:M
-            %pos = x_est(:,kp+m,i); % using updated estimates
-            pos = Xa(2*m-1:2*m,1); % using predicted estimates
-            z_x1 = DEM_height(pos + [-s;0], DEM);
-            z_x2 = DEM_height(pos + [s;0], DEM);
-            z_y1 = DEM_height(pos + [0;-s], DEM);
-            z_y2 = DEM_height(pos + [0;s], DEM);
-            
-            H = [(z_x2 - z_x1)/(2*s), (z_y2 - z_y1)/(2*s)];
-            Ha = SetBlockMat(Ha, H, m, m, 1, 2);
-            
-            z_est = DEM_height(pos, DEM);
-            z_est_a(m,1) = z_est;
-            z_mea_a(m,1) = z_meas(kp+m,i);
-        end
-        
-        Ka = Pa*Ha'*inv(Ha*Pa*Ha' + Ra);
-        Pa = (eye(2*M,2*M) - Ka*Ha)*Pa;
-        Xa = Xa + Ka*(z_mea_a - z_est_a);
-        
-        x_est(:,k,i) = Xa(2*M-1:2*M,1);
-        x_err(:,k,i) = x_est(:,k,i) - x_true(:,k);
-        
-        dcov_res(:,k,i) = covAnal(Pa(2*M-1:2*M,2*M-1:2*M));
-        
-        Pa_prev = Pa;
-    
-    end
-%     if (mod(i,10) == 0)
-        disp([' RHKF Monte-Carlo step ' int2str(i) '/' int2str(numMonte) ' completed']);
-%     end
-
-
-end
-disp(['-- RHKF completed --']);
-
-x_est_RHKF = x_est;
-x_err_RHKF = x_err;
-dcov_res_RHKF = dcov_res;
-
-[X_err_RMS_RHKF, Y_err_RMS_RHKF, d_err_RMS_RHKF] = RMSE(x_err_RHKF, length, numMonte);
-
-end
-
 
 %% save
 save('result.mat');
@@ -583,22 +461,23 @@ plot(time, d_err_RMS_PF, 'b'); hold on;
 plot(time, d_err_RMS_APF, 'r'); hold on;
 plot(time, d_err_RMS_OOSM, 'k'); hold on;
 plot(time, d_err_RMS_MPF, 'c'); hold on;
-plot(time, d_err_RMS_RHKF, 'm'); hold on;
-legend('PF', 'APF', 'OOSM', 'MPF', 'RHKF');
+xlabel('Time (s)');
+ylabel('RMSE (m)');
+legend('PF', 'APF', 'OOSM', 'MPF');
 %%
 ePF = sum(d_err_RMS_PF(51:151))/100
 eAPF = sum(d_err_RMS_APF(51:151))/100
 eOOSM = sum(d_err_RMS_OOSM(51:151))/100
 eMPF = sum(d_err_RMS_MPF(51:151))/100
-eRHKF = sum(d_err_RMS_RHKF(51:151))/100
 
 figure;
 plot(time(2:end), mean(dcov_res_PF(1,2:end,:),3), 'b'); hold on;
 plot(time(2:end), mean(dcov_res_APF(1,2:end,:),3), 'r');
 plot(time(2:end), mean(dcov_res_OOSM(1,2:end,:),3), 'k'); hold on;
 plot(time(2:end), mean(dcov_res_MPF(1,2:end,:),3), 'c'); hold on;
-plot(time(2:end), mean(dcov_res_RHKF(1,2:end,:),3), 'm'); hold on;
-legend('PF', 'APF', 'OOSM', 'MPF', 'RHKF');
+xlabel('Time (s)');
+ylabel('COV (m)');
+legend('PF', 'APF', 'OOSM', 'MPF');
 
 
 
