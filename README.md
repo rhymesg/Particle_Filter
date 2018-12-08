@@ -1,6 +1,10 @@
 # Particle_Filter
 MATLAB implementation of standard particle filter, auxiliary particle filter, mixture particle filter, out-of-sequence particle filter, and receding-horizon Kalman filter
 
+How to run:
+
+run main_OOSM.m
+
 
 Please cite the following paper if you find this code helpful:
 
