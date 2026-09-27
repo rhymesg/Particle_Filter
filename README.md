@@ -67,8 +67,8 @@ If you use or adapt this work, please cite:
 
 > Youngjoo Kim, Kyungwoo Hong, and Hyochoong Bang. “Utilizing Out-of-Sequence Measurement for Ambiguous Update in Particle Filtering.” *IEEE Transactions on Aerospace and Electronic Systems*, 54(1), 493–501, February 2018. [doi:10.1109/TAES.2017.2741878](https://doi.org/10.1109/TAES.2017.2741878).
 
-For code reuse, please also reference [rhymesg/Particle_Filter](https://github.com/rhymesg/Particle_Filter) and the commit or release used. [CITATION.cff](CITATION.cff) provides machine-readable software and publication metadata; citation requests are separate from license obligations.
+[CITATION.cff](CITATION.cff) provides machine-readable software and publication metadata.
 
 ## License and provenance
 
-The repository includes an [MIT license](LICENSE). [Provenance and limitations](docs/limitations.md#provenance-and-attribution) identify the source revision, preserved third-party notices, and unresolved terrain-data provenance.
+The repository includes an [MIT license](LICENSE). See [provenance and limitations](docs/limitations.md#provenance-and-attribution) for the source revision and third-party notices.

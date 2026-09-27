@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "Please cite the paper in preferred-citation and reference this repository and the commit or release used when adapting its source code."
+message: "Please cite the paper in preferred-citation if you use or adapt this work."
 type: software
 title: "Particle_Filter: MATLAB particle filters for terrain-referenced navigation"
 authors:

@@ -22,8 +22,6 @@ Guide to the inputs and outputs of [main_OOSM.m](../main_OOSM.m). Follow the [in
 - Each floored index must be at least 3 and at most the corresponding matrix dimension minus 2; there is no clipping or boundary recovery.
 - [plot_terrain.m](../plot_terrain.m) additionally requires `x_true` from the simulation workspace and changes two local plot samples; its contour values are not untouched source data.
 
-See [provenance](limitations.md#provenance-and-attribution) before redistributing terrain data independently.
-
 ## Expected outputs
 
 These outputs are identified from source inspection; they are not measured results from a verified run.
