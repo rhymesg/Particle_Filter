@@ -17,6 +17,7 @@ for m = 1:1:numCheckMode
     BW_prev = BW;
     [pdfxy, xi, yi] = dskensity2d(particle, BW_prev);
     LM = imregionalmax(pdfxy);
+    found_transition = false;
     for i = 1:1:iter
 
         BW_prev = BW;
@@ -33,6 +34,7 @@ for m = 1:1:numCheckMode
         numMode = sum(sum(LM));
         
         if (numMode > m)
+            found_transition = true;
             BW_cr(:,m) = BW_prev;
             [c, r] = find(LM_prev, m); % x,y ¹Ý´ë·Î
         	center{m} = [xi(r); yi(c)];
@@ -44,8 +46,9 @@ for m = 1:1:numCheckMode
             break;
         end
     end
-    if(i == iter)
-        BW_cr(:,m) = BW_min;
+    if ~found_transition
+        BW_cr(:,m) = BW;
+        [c, r] = find(LM, m);
         center{m} = [xi(r); yi(c)];
         return;
     end

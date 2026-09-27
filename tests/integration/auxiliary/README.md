@@ -8,4 +8,10 @@ From the repository root, with base MATLAB:
 matlab -batch "addpath('tests/integration/auxiliary'); verify_auxiliary"
 ```
 
-These checks require no external data or plotting and cover the numerical routines described above.
+Check bandwidth fallback centers and a transition on the final iteration:
+
+```bash
+matlab -batch "addpath('tests/integration/auxiliary'); verify_bandwidth"
+```
+
+The bandwidth check substitutes deterministic density and regional-maxima functions in a temporary folder, covering search termination with base MATLAB. Both checks restore the caller's environment and require no external data or plotting.

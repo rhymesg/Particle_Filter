@@ -30,7 +30,7 @@ The paper addresses occasional local measurement ambiguity, rather than persiste
 
 For each stored measurement `z_a`, `OOSM.m` cumulatively multiplies current weights by likelihoods evaluated at the stored particles of time `a`, normalizes, and resamples the current prior cloud. It returns the final resampled cloud.
 
-**This is not the full published Algorithm 2–3:** the helper reuses stored particles instead of conditional sampling in Eqs. (8)–(9), and it does not apply Algorithm 3's additional covariance acceptance test. See [paper differences](limitations.md#differences-from-the-paper) before drawing scientific conclusions.
+The helper reuses stored particles and returns the final candidate. Paper Algorithms 2–3 specify conditional sampling in Eqs. (8)–(9) and an additional covariance acceptance test; see the [procedure comparison](implementation-notes.md#differences-from-the-paper).
 
 ## Comparison filters
 
@@ -54,6 +54,6 @@ The MPF path is [NumMode.m](../NumMode.m) → [FindCriticalBW.m](../FindCritical
 | `RMSE(x_err, length, numMonte)` | `2 × K × M` errors → three `K × 1` RMSE series | Coordinate and Euclidean-distance RMSE; Eq. (12) |
 | `covAnal(C)` | `2 × 2` covariance → two scalar summaries | Both entries algebraically reduce to `sqrt(trace(C))`; Eq. (13) is the run-averaged measure |
 
-These are assumptions of the existing code, not validated input checks. Degenerate weights, boundary positions, and mode-estimation failures are covered in [limitations](limitations.md#runtime-and-numerical-limits).
+These are assumptions of the existing code, not validated input checks. Degenerate weights, boundary positions, and mode-estimation failures are covered in [implementation details](implementation-notes.md#numerical-contracts).
 
 `Resample` optionally returns ancestor indices as its third output. [auxiliary_weights.m](../auxiliary_weights.m) normalizes the ratios `p(z|x_new)/p(z|lookahead_ancestor)` in log space after the densities are evaluated. Invalid or completely underflowed weights fail explicitly. [Regression checks](../tests/integration/auxiliary/README.md) cover ancestor correspondence and the zero-process-noise case.

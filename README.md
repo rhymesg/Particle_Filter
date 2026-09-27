@@ -42,7 +42,7 @@ See the [simulation guide](docs/simulation.md) for settings, data layout, output
 
 ## Implementation scope
 
-The source contains standard and auxiliary particle filters, plus experiments with stored measurements and mode-based particle updates. The APF includes likelihood-ratio weight correction; [update mechanics](docs/limitations.md#differences-from-the-paper) describe the relationship between the source and published procedures.
+The source contains standard and auxiliary particle filters, plus experiments with stored measurements and mode-based particle updates. The APF includes likelihood-ratio weight correction; [update mechanics](docs/implementation-notes.md#differences-from-the-paper) describe the relationship between the source and published procedures.
 
 ### Checks
 
@@ -54,6 +54,8 @@ matlab -batch "addpath('tests/integration/auxiliary'); verify_auxiliary"
 
 ## Citation
 
+For academic attribution, please acknowledge this repository when adapting its code or examples.
+
 If you use or adapt this work, please cite:
 
 > Youngjoo Kim, Kyungwoo Hong, and Hyochoong Bang. “Utilizing Out-of-Sequence Measurement for Ambiguous Update in Particle Filtering.” *IEEE Transactions on Aerospace and Electronic Systems*, 54(1), 493–501, February 2018. [doi:10.1109/TAES.2017.2741878](https://doi.org/10.1109/TAES.2017.2741878).
@@ -62,4 +64,4 @@ If you use or adapt this work, please cite:
 
 ## License and provenance
 
-The repository includes an [MIT license](LICENSE). See [provenance](docs/limitations.md#provenance-and-attribution) for the source revision and third-party notices.
+The repository includes an [MIT license](LICENSE). See [provenance](docs/implementation-notes.md#provenance-and-attribution) for the source revision and third-party notices.
