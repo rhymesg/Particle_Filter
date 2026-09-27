@@ -8,6 +8,8 @@ This is Youngjoo Kim's research code accompanying **“Utilizing Out-of-Sequence
 
 Use the source and [method guide](docs/particle-filtering.md) to study ambiguity handling in terrain navigation and compare particle-filter update strategies.
 
+The [particle-filtering reference](docs/particle-filtering.md) explains the update sequence and data contracts for adapting the ideas in Python, C++, or other languages.
+
 ## Method
 
 When the terrain likelihood is ambiguous, retain the measurement and reconsider it after later observations provide more context. The supplied simulation compares this idea with standard, auxiliary, and mixture particle filtering.
@@ -40,7 +42,7 @@ See the [simulation guide](docs/simulation.md) for settings, data layout, output
 
 ## Implementation scope
 
-The standard and auxiliary filters provide estimation examples; the APF includes the likelihood-ratio weight correction. The OOSM helper differs from the published conditional update, and MPF mode-weight handling needs correction before quantitative reuse; see [implementation differences](docs/limitations.md#differences-from-the-paper). The paper's receding-horizon Kalman comparison is not included.
+The source contains standard and auxiliary particle filters, plus experiments with stored measurements and mode-based particle updates. The APF includes likelihood-ratio weight correction; [update mechanics](docs/limitations.md#differences-from-the-paper) describe the relationship between the source and published procedures.
 
 ### Checks
 
@@ -60,4 +62,4 @@ If you use or adapt this work, please cite:
 
 ## License and provenance
 
-The repository includes an [MIT license](LICENSE). See [provenance and limitations](docs/limitations.md#provenance-and-attribution) for the source revision and third-party notices.
+The repository includes an [MIT license](LICENSE). See [provenance](docs/limitations.md#provenance-and-attribution) for the source revision and third-party notices.
