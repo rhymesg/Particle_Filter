@@ -1,6 +1,6 @@
 # Running the particle-filter simulation
 
-Guide to the inputs and outputs of [main_OOSM.m](../main_OOSM.m). Follow the [installation and run commands](../README.md#installation) first; algorithm details are in the [technical reference](particle-filtering.md).
+Guide to the inputs and outputs of [main_OOSM.m](../main_OOSM.m). Follow the [requirements and run commands](../README.md#examples) first; algorithm details are in the [technical reference](particle-filtering.md).
 
 ## Settings and randomness
 

@@ -6,50 +6,13 @@ MATLAB particle filtering examples for terrain-referenced navigation (TRN, also 
 
 This is Youngjoo Kim's research code accompanying **“Utilizing Out-of-Sequence Measurement for Ambiguous Update in Particle Filtering,” published in IEEE Transactions on Aerospace and Electronic Systems (2018)**, an [established peer-reviewed journal covering aerospace systems, navigation, and target tracking](https://ieee-aess.org/publications/taes). See the [paper and citation](#citation) and [canonical repository](https://github.com/rhymesg/Particle_Filter).
 
-The proposed method postpones locally ambiguous terrain measurements and reuses them in a later update.
+Use the source and [method guide](docs/particle-filtering.md) to study ambiguity handling in terrain navigation and compare particle-filter update strategies.
 
-Use this code as a source-level reference for the four-filter terrain simulation. Before adapting it, review the [differences from the published algorithm](docs/limitations.md#differences-from-the-paper) and [license and provenance](#license-and-provenance); exact reproduction of the paper's results and suitability for operational navigation have not been established.
+## Method
 
-## Installation
+When the terrain likelihood is ambiguous, retain the measurement and reconsider it after later observations provide more context. The supplied simulation compares this idea with standard, auxiliary, and mixture particle filtering.
 
-- Install MATLAB with Statistics and Machine Learning Toolbox ([`ksdensity`](https://www.mathworks.com/help/stats/ksdensity.html)) and Image Processing Toolbox ([`imregionalmax`](https://www.mathworks.com/help/images/ref/imregionalmax.html)) for the full comparison.
-- The shell command uses [`matlab -batch`](https://www.mathworks.com/help/matlab/ref/matlabmacos.html), available from R2019a; put the MATLAB executable on PATH.
-- The required terrain file, [DB_part.mat](DB_part.mat), is included.
-- No MATLAB release or Octave compatibility has been validated for this checkout.
-
-Clone the repository:
-
-```bash
-git clone https://github.com/rhymesg/Particle_Filter.git
-```
-
-Enter the repository root:
-
-```bash
-cd Particle_Filter
-```
-
-## Usage
-
-Run the four-filter comparison without opening figure windows:
-
-```bash
-matlab -batch "set(groot,'defaultFigureVisible','off'); main_OOSM"
-```
-
-For visible plots, select the repository root as MATLAB's current folder and enter `main_OOSM`. The script writes or overwrites `result.mat` and `result_mode.mat` in that folder.
-
-See the [simulation guide](docs/simulation.md) for settings, data layout, outputs, randomness, and a small synthetic helper example. Keep all `RUN_*` switches enabled for the complete script; its final plots depend on all four filter outputs.
-
-## Development
-
-Run the [APF importance-weight regression checks](tests/integration/auxiliary/README.md) before changing the corresponding numerical routines.
-
-No automated MATLAB test suite is supplied. MATLAB execution and the published numerical results remain unverified; [verification and reuse limits](docs/limitations.md) distinguish source inspection from reproduction.
-
-Report issues through the [issue tracker](https://github.com/rhymesg/Particle_Filter/issues), including the commit, MATLAB/toolbox versions, settings, and error or unexpected output.
-
-## Algorithms and source
+### Algorithms and source
 
 All four filters run in [main_OOSM.m](main_OOSM.m); the [algorithm reference](docs/particle-filtering.md) maps the paper to implementation details.
 
@@ -61,7 +24,31 @@ All four filters run in [main_OOSM.m](main_OOSM.m); the [algorithm reference](do
 | Mixture PF (MPF) | Section IV-B2; mode analysis in IV-D | `%% MPF` section; [NumMode.m](NumMode.m), [Cluster.m](Cluster.m) |
 | Terrain model and error metrics | Section IV-A, IV-C, Eqs. (10)–(13) | [DEM_height.m](DEM_height.m), [RMSE.m](RMSE.m), [covAnal.m](covAnal.m) |
 
-The paper's receding-horizon Kalman filter comparison is not included in this repository.
+## Examples
+
+Run from the repository root with MATLAB, Statistics and Machine Learning Toolbox (`ksdensity`), and Image Processing Toolbox (`imregionalmax`). The terrain file [DB_part.mat](DB_part.mat) is included; shell commands use `matlab -batch` (R2019a or later).
+
+Run the four-filter comparison without opening figure windows:
+
+```bash
+matlab -batch "set(groot,'defaultFigureVisible','off'); main_OOSM"
+```
+
+For visible plots, select the repository root as MATLAB's current folder and enter `main_OOSM`. The script writes or overwrites `result.mat` and `result_mode.mat` in that folder.
+
+See the [simulation guide](docs/simulation.md) for settings, data layout, outputs, randomness, and a small synthetic helper example. Keep all `RUN_*` switches enabled for the complete script; its final plots depend on all four filter outputs.
+
+## Implementation scope
+
+The standard and auxiliary filters provide estimation examples; the APF includes the likelihood-ratio weight correction. The OOSM helper differs from the published conditional update, and MPF mode-weight handling needs correction before quantitative reuse; see [implementation differences](docs/limitations.md#differences-from-the-paper). The paper's receding-horizon Kalman comparison is not included, and native MATLAB execution remains unverified.
+
+### Checks
+
+Run the focused [APF importance-weight checks](tests/integration/auxiliary/README.md), which use base MATLAB:
+
+```bash
+matlab -batch "addpath('tests/integration/auxiliary'); verify_auxiliary"
+```
 
 ## Citation
 
