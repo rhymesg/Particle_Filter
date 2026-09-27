@@ -14,7 +14,7 @@ Use this code as a source-level reference for the four-filter terrain simulation
 
 - Install MATLAB with Statistics and Machine Learning Toolbox ([`ksdensity`](https://www.mathworks.com/help/stats/ksdensity.html)) and Image Processing Toolbox ([`imregionalmax`](https://www.mathworks.com/help/images/ref/imregionalmax.html)) for the full comparison.
 - The shell command uses [`matlab -batch`](https://www.mathworks.com/help/matlab/ref/matlabmacos.html), available from R2019a; put the MATLAB executable on PATH.
-- The required terrain file, [DB_part.mat](DB_part.mat), is included; the ignored `ref/` folder is not required.
+- The required terrain file, [DB_part.mat](DB_part.mat), is included.
 - No MATLAB release or Octave compatibility has been validated for this checkout.
 
 Clone the repository:
@@ -43,7 +43,7 @@ See the [simulation guide](docs/simulation.md) for settings, data layout, output
 
 ## Development
 
-No automated MATLAB test suite is supplied. MATLAB execution and the published numerical results have not been verified in this documentation update; [verification and reuse limits](docs/limitations.md) distinguish source inspection from reproduction.
+No automated MATLAB test suite is supplied. MATLAB execution and the published numerical results remain unverified; [verification and reuse limits](docs/limitations.md) distinguish source inspection from reproduction.
 
 Report issues through the [issue tracker](https://github.com/rhymesg/Particle_Filter/issues), including the commit, MATLAB/toolbox versions, settings, and error or unexpected output.
 
