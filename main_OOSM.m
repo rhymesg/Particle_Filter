@@ -378,15 +378,17 @@ for i = 1:1:numMonte
     for k = 2:1:length
         
         %%% auxiliary
+        lookahead = zeros(1,numParticle);
         for n = 1:1:numParticle
             particle(:,n) = particle(:,n) + v_meas(:,k-1,i)*dt;
             z_est = DEM_height(particle(:,n),DEM);
-            weight(n) = weight(n) * likelihood(z_est, z_meas(k,i), sig_meas);
+            lookahead(n) = likelihood(z_est, z_meas(k,i), sig_meas);
+            weight(n) = weight(n) * lookahead(n);
         end
         weight = weight/sum(weight);      
         
         %%% resampling (SIR)
-        [particle, weight] = Resample(particle, weight);
+        [particle, weight, ancestors] = Resample(particle, weight);
        
         %%% time update
         for n = 1:1:numParticle
@@ -396,11 +398,12 @@ for i = 1:1:numMonte
         dcov_mi = det(cov(particle'));
 
         %%% measurement update
+        posterior_likelihood = zeros(1,numParticle);
         for n = 1:1:numParticle      
             z_est = DEM_height(particle(:,n),DEM);
-            weight(n) = weight(n) * likelihood(z_est, z_meas(k,i), sig_meas);
+            posterior_likelihood(n) = likelihood(z_est, z_meas(k,i), sig_meas);
         end   
-        weight = weight/sum(weight);
+        weight = auxiliary_weights(posterior_likelihood, lookahead, ancestors);
         x_est(:,k,i) = [dot(weight,particle(1,:)); dot(weight,particle(2,:))]; % MLSE estimate
         x_err(:,k,i) = x_est(:,k,i) - x_true(:,k);  
         
@@ -461,10 +464,10 @@ xlabel('Time (s)');
 ylabel('RMSE (m)');
 legend('PF', 'APF', 'OOSM', 'MPF');
 %%
-ePF = sum(d_err_RMS_PF(51:151))/100
-eAPF = sum(d_err_RMS_APF(51:151))/100
-eOOSM = sum(d_err_RMS_OOSM(51:151))/100
-eMPF = sum(d_err_RMS_MPF(51:151))/100
+ePF = mean(d_err_RMS_PF(51:151))
+eAPF = mean(d_err_RMS_APF(51:151))
+eOOSM = mean(d_err_RMS_OOSM(51:151))
+eMPF = mean(d_err_RMS_MPF(51:151))
 
 figure;
 plot(time(2:end), mean(dcov_res_PF(1,2:end,:),3), 'b'); hold on;

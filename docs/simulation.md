@@ -37,7 +37,7 @@ These outputs are identified from source inspection; they are not measured resul
 
 The mode-significance plot combines different filters; it does not establish a within-filter relationship between modes and covariance increases. With multiple Monte Carlo runs, `signi` retains the final MPF run while `covIncrease_PF` accumulates PF counts.
 
-The `e*` summaries sum 101 samples and divide by 100; treat them as the script's reported statistic, not a conventional sample mean. Published plots and Table II are not expected numerical outputs of the default run.
+The `e*` summaries now take the arithmetic mean of the 101 samples at indices `51:151`, correcting the historical division by 100. Published plots and Table II are not expected numerical outputs of the default run.
 
 ## Small synthetic helper example
 

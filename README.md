@@ -43,6 +43,8 @@ See the [simulation guide](docs/simulation.md) for settings, data layout, output
 
 ## Development
 
+Run the [APF importance-weight regression checks](tests/integration/auxiliary/README.md) before changing the corresponding numerical routines.
+
 No automated MATLAB test suite is supplied. MATLAB execution and the published numerical results remain unverified; [verification and reuse limits](docs/limitations.md) distinguish source inspection from reproduction.
 
 Report issues through the [issue tracker](https://github.com/rhymesg/Particle_Filter/issues), including the commit, MATLAB/toolbox versions, settings, and error or unexpected output.

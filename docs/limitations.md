@@ -1,6 +1,6 @@
 # Provenance and reproducibility limits
 
-Reference for assessing and adapting [Particle_Filter](../README.md). These observations describe the source at [588308f](https://github.com/rhymesg/Particle_Filter/tree/588308fadbe7de7463b51cdae339b29e619da739), with documentation and provenance-comment updates only.
+Reference for assessing and adapting [Particle_Filter](../README.md). The historical source baseline is [588308f](https://github.com/rhymesg/Particle_Filter/tree/588308fadbe7de7463b51cdae339b29e619da739). Current changes correct APF importance weights and the reported sample mean; the research limitations below remain.
 
 ## Differences from the paper
 
@@ -16,12 +16,12 @@ The [published method](https://doi.org/10.1109/TAES.2017.2741878) and the suppli
 | Section IV compares five methods, including RHKF | Only four PF variants are supplied | The full comparison cannot be run here |
 | Table I specifies three noise cases | One active configuration uses `sig_z = 15 + 4.71` and its own process/bias settings | A case-by-case reproduction requires reconciling settings |
 
-The MPF uses critical-bandwidth mode estimation and nearest-centre assignment, rather than the included mean-shift helper. The APF uses successive likelihood weighting without a likelihood-ratio correction; evaluate this particular implementation before substituting it for another APF formulation.
+The MPF uses critical-bandwidth mode estimation and nearest-centre assignment, rather than the included mean-shift helper. The MPF resamples each mode to its previous particle count and then discards posterior mode mass when resetting global weights. A repair must preserve particle and mode weights through clustering, or reallocate particles by posterior mode mass; its current multi-step posterior is not reliable. The APF now includes its lookahead likelihood-ratio correction.
 
 ## Runtime and numerical limits
 
 - [DEM_height.m](../DEM_height.m) assumes every particle stays inside the [terrain interpolation boundary](simulation.md#terrain-data); out-of-range indices cause errors.
-- Likelihood products are normalized directly, with no log weights or recovery for zero, nonfinite, or underflowed sums.
+- Likelihood densities can still underflow. Resampling and APF second-stage weighting reject invalid totals rather than silently returning a cloud; the other direct normalizations have no recovery policy.
 - `OOSM.m` requires a nonempty queue; otherwise `particle_star` is undefined, and its `oosmSucceed` output is never updated even for a nonempty queue.
 - [FindCriticalBW.m](../FindCriticalBW.m) can reference uninitialized `r`/`c` if its initial bandwidth search reaches the fallback before finding a mode transition.
 - [dskensity2d.m](../dskensity2d.m) assumes independent coordinate marginals; [Significance.m](../Significance.m) divides by marginal variances without handling zero variance.
@@ -40,7 +40,7 @@ The MPF uses critical-bandwidth mode estimation and nearest-centre assignment, r
 
 - Publication metadata and Algorithm 2–3 mappings were checked against the supplied journal PDF; source paths, helper calls, and run-output descriptions were inspected.
 - `CITATION.cff` passes the CFF 1.2.0 schema; local documentation links and anchors resolve, and the terrain structure was inspected with SciPy.
-- Filtering statements and terrain data are unchanged by this documentation update.
+- Terrain data are unchanged. [APF regression checks](../tests/integration/auxiliary/README.md) cover the changed weight algebra; these checks have not run natively.
 - MATLAB and Octave are unavailable in the review environment; neither the simulation nor the synthetic helper command has been run.
 - No validated numerical tolerances, deterministic full-run baseline, or reproduction of published figures is available.
 

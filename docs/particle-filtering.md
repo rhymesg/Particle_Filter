@@ -36,7 +36,7 @@ For each stored measurement `z_a`, `OOSM.m` cumulatively multiplies current weig
 
 | Method | Implemented procedure | Paper connection |
 |---|---|---|
-| APF | Propagate with measured velocity; use the current likelihood to resample; add process noise; reweight and compute a weighted estimate | Section IV-B1 describes auxiliary look-ahead resampling; this implementation has no likelihood-ratio correction |
+| APF | Propagate with measured velocity; use the current likelihood to resample; add process noise; apply the lookahead likelihood-ratio correction and compute a weighted estimate | Section IV-B1 describes auxiliary look-ahead resampling; the second stage now divides by the selected ancestor's lookahead likelihood |
 | MPF | Estimate modes; assign particles to nearest centres; update and resample each cluster; combine cluster estimates by total likelihood | Section IV-B2 describes mixture filtering; clustering here uses critical-bandwidth mode estimation |
 
 The MPF path is [NumMode.m](../NumMode.m) → [FindCriticalBW.m](../FindCriticalBW.m) / [Significance.m](../Significance.m) → [dskensity2d.m](../dskensity2d.m) → [Cluster.m](../Cluster.m). `NumMode.m` cites Silverman's 1981 mode-estimation method, also reference [25] in the paper.
@@ -55,3 +55,5 @@ The MPF path is [NumMode.m](../NumMode.m) → [FindCriticalBW.m](../FindCritical
 | `covAnal(C)` | `2 × 2` covariance → two scalar summaries | Both entries algebraically reduce to `sqrt(trace(C))`; Eq. (13) is the run-averaged measure |
 
 These are assumptions of the existing code, not validated input checks. Degenerate weights, boundary positions, and mode-estimation failures are covered in [limitations](limitations.md#runtime-and-numerical-limits).
+
+`Resample` optionally returns ancestor indices as its third output. [auxiliary_weights.m](../auxiliary_weights.m) normalizes the ratios `p(z|x_new)/p(z|lookahead_ancestor)` in log space after the densities are evaluated. Invalid or completely underflowed weights fail explicitly. [Regression checks](../tests/integration/auxiliary/README.md) cover ancestor correspondence and the zero-process-noise case.
