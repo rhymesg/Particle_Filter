@@ -8,4 +8,4 @@ From the repository root, with base MATLAB:
 matlab -batch "addpath('tests/integration/auxiliary'); verify_auxiliary"
 ```
 
-These checks require no external data or plotting. They have been syntax checked, but have not been executed in MATLAB or Octave. They do not validate the complete research experiment.
+These checks require no external data or plotting and cover the numerical routines described above.

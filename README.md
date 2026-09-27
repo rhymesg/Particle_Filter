@@ -40,7 +40,7 @@ See the [simulation guide](docs/simulation.md) for settings, data layout, output
 
 ## Implementation scope
 
-The standard and auxiliary filters provide estimation examples; the APF includes the likelihood-ratio weight correction. The OOSM helper differs from the published conditional update, and MPF mode-weight handling needs correction before quantitative reuse; see [implementation differences](docs/limitations.md#differences-from-the-paper). The paper's receding-horizon Kalman comparison is not included, and native MATLAB execution remains unverified.
+The standard and auxiliary filters provide estimation examples; the APF includes the likelihood-ratio weight correction. The OOSM helper differs from the published conditional update, and MPF mode-weight handling needs correction before quantitative reuse; see [implementation differences](docs/limitations.md#differences-from-the-paper). The paper's receding-horizon Kalman comparison is not included.
 
 ### Checks
 

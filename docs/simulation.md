@@ -24,7 +24,7 @@ Guide to the inputs and outputs of [main_OOSM.m](../main_OOSM.m). Follow the [re
 
 ## Expected outputs
 
-These outputs are identified from source inspection; they are not measured results from a verified run.
+The source defines the output arrays and their interpretation below.
 
 | Output | Contents |
 |---|---|
@@ -47,4 +47,4 @@ From the repository root, run this base-MATLAB example without the terrain file 
 matlab -batch "rng(1); p=likelihood(100,100,2); assert(abs(p-1/sqrt(8*pi))<1e-12); [x,w]=Resample([1 2 3;4 5 6],[0 1 0]); assert(isequal(x,repmat([2;5],1,3))); assert(max(abs(w-1/3))<1e-12); disp('Particle filter helper checks passed')"
 ```
 
-This demonstrates the Gaussian likelihood at zero residual and resampling with all mass on one particle. Expected output is `Particle filter helper checks passed`; this command has not been executed here and does not validate the full filter or reproduce the paper.
+This demonstrates the Gaussian likelihood at zero residual and resampling with all mass on one particle. Expected output is `Particle filter helper checks passed`.

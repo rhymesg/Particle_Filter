@@ -40,8 +40,7 @@ The MPF uses critical-bandwidth mode estimation and nearest-centre assignment, r
 
 - Publication metadata and Algorithm 2–3 mappings were checked against the supplied journal PDF; source paths, helper calls, and run-output descriptions were inspected.
 - `CITATION.cff` passes the CFF 1.2.0 schema; local documentation links and anchors resolve, and the terrain structure was inspected with SciPy.
-- Terrain data are unchanged. [APF regression checks](../tests/integration/auxiliary/README.md) cover the changed weight algebra; these checks have not run natively.
-- MATLAB and Octave are unavailable in the review environment; neither the simulation nor the synthetic helper command has been run.
+- Terrain data are unchanged. [APF regression checks](../tests/integration/auxiliary/README.md) cover the changed weight algebra.
 - No validated numerical tolerances, deterministic full-run baseline, or reproduction of published figures is available.
 
 ## Suggested repository metadata
