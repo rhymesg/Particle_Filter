@@ -1,9 +1,5 @@
-%%
-% Author: Youngjoo Kim
-% Please cite the following paper if you find this code helpful:
-% Youngjoo Kim et al., "Utilizing Out-of-Sequnece Measurement for
-%   Ambiguous Update in Particle Filtering", IEEE Transactions on Aerospace
-%   and Electronic Systems, 54(1), 2018.
+% PF/APF/MPF/OOSM terrain navigation; doi:10.1109/TAES.2017.2741878.
+% Guide: docs/particle-filtering.md; citation: README.md#citation.
 
 %% setting
 load('DB_part.mat')

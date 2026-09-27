@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+message: "Please cite the paper in preferred-citation and reference this repository and the commit or release used when adapting its source code."
+type: software
+title: "Particle_Filter: MATLAB particle filters for terrain-referenced navigation"
+authors:
+  - family-names: Kim
+    given-names: Youngjoo
+repository-code: "https://github.com/rhymesg/Particle_Filter"
+url: "https://github.com/rhymesg/Particle_Filter"
+license: MIT
+keywords:
+  - particle filter
+  - out-of-sequence measurement
+  - sequential importance resampling
+  - terrain-referenced navigation
+  - terrain-aided navigation
+  - auxiliary particle filter
+  - mixture particle filter
+  - MATLAB
+preferred-citation:
+  type: article
+  title: "Utilizing Out-of-Sequence Measurement for Ambiguous Update in Particle Filtering"
+  authors:
+    - family-names: Kim
+      given-names: Youngjoo
+    - family-names: Hong
+      given-names: Kyungwoo
+    - family-names: Bang
+      given-names: Hyochoong
+  journal: "IEEE Transactions on Aerospace and Electronic Systems"
+  year: 2018
+  month: 2
+  volume: 54
+  issue: 1
+  start: 493
+  end: 501
+  doi: "10.1109/TAES.2017.2741878"
+  url: "https://doi.org/10.1109/TAES.2017.2741878"

@@ -1,6 +1,6 @@
 function [ height ] = DEM_height( pos, DEM )
-%DTED_HEIGHT 이 함수의 요약 설명 위치
-%   자세한 설명 위치
+% Terrain-height interpolation for TRN; doi:10.1109/TAES.2017.2741878.
+% Guide: docs/simulation.md; citation: README.md#citation.
 
 resolution = DEM.resolution;
 

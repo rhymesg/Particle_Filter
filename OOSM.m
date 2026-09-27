@@ -1,6 +1,6 @@
 function [ particle_res, oosmSucceed ] = OOSM( particle_mi, weight_un, dcov_pl, skipped, sig_meas, DEM, oosmSucceed )
-%OOSM 이 함수의 요약 설명 위치
-%   자세한 설명 위치
+% Stored-particle OOSM variant; doi:10.1109/TAES.2017.2741878.
+% Guide: docs/particle-filtering.md; citation: README.md#citation.
 
 [a M] = size(skipped);
 [r, numParticle] = size(particle_mi);

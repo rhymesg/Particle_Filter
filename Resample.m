@@ -1,6 +1,6 @@
 function [ particle_res, weight_res ] = Resample( particle, weight )
-%RESAMPLE 이 함수의 요약 설명 위치
-%   자세한 설명 위치
+% SIR multinomial resampling; doi:10.1109/TAES.2017.2741878.
+% Guide: docs/particle-filtering.md; citation: README.md#citation.
 
 [r, numParticle] = size(particle);
 
