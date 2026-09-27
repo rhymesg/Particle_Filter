@@ -4,7 +4,7 @@
 
 MATLAB particle filtering examples for terrain-referenced navigation (TRN, also called terrain-aided navigation), comparing standard, auxiliary, mixture, and out-of-sequence measurement particle filters for nonlinear position estimation.
 
-This is Youngjoo Kim's research code accompanying **“Utilizing Out-of-Sequence Measurement for Ambiguous Update in Particle Filtering,” published in IEEE Transactions on Aerospace and Electronic Systems (2018)**, a peer-reviewed aerospace and electronic systems journal. See the [paper and citation](#citation) and [canonical repository](https://github.com/rhymesg/Particle_Filter).
+This is Youngjoo Kim's research code accompanying **“Utilizing Out-of-Sequence Measurement for Ambiguous Update in Particle Filtering,” published in IEEE Transactions on Aerospace and Electronic Systems (2018)**, an [established peer-reviewed journal covering aerospace systems, navigation, and target tracking](https://ieee-aess.org/publications/taes). See the [paper and citation](#citation) and [canonical repository](https://github.com/rhymesg/Particle_Filter).
 
 The proposed method postpones locally ambiguous terrain measurements and reuses them in a later update.
 
